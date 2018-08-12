@@ -6,6 +6,7 @@ const app = express();
 const blogRouter = require('./blogRouter');
 
 app.use(morgan('common'));
+// app.use(express.json());// I did not use this but it was in the solution
 app.use('/blog-posts', blogRouter);
 
 app.listen(process.env.PORT || 8080, () => {
