@@ -2,8 +2,6 @@
 
 const express = require('express');
 const router = express.Router();
-const bodyParser = require('body-parser');
-const jsonParser = bodyParser.json();
 const {BlogPosts} = require('./models');
 
 BlogPosts.create('AI & Humans', 'Humans can be trusted to behave unethically with any technology', 'Napes Weaver');
@@ -12,7 +10,7 @@ router.get('/', (req, res) => {
   res.json(BlogPosts.get());
 });
 
-router.post('/', jsonParser, (req, res) => {
+router.post('/', (req, res) => {
   const requiredFields = ['title', 'content', 'author'];
 
   for (let i = 0; i < requiredFields.length; i++) {
@@ -27,7 +25,7 @@ router.post('/', jsonParser, (req, res) => {
   res.status(201).json(blog);
 });
 
-router.put('/:id', jsonParser, (req, res) => {
+router.put('/:id', (req, res) => {
   const requiredFields = ['id', 'title', 'content', 'author'];
 
   for (let i = 0; i < requiredFields.length; i++) {
