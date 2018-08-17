@@ -24,6 +24,10 @@ describe('Blogs', function() {
         expect(res.body).to.be.a('array');
         expect(res.body.length).to.be.at.least(1);
         const expectedKeys = ['id', 'title', 'content', 'author', 'publishDate'];
+        res.body.forEach(function(blog) {
+          expect(blog).to.be.a('object');
+          expect(blog).to.include.keys(expectedKeys);
+        });
       });
   });
   it('should add a blog on POST', function() {
@@ -39,7 +43,7 @@ describe('Blogs', function() {
         expect(res.body).to.include.keys('id', 'title', 'content', 'author', 'publishDate');
         expect(res.body.id).to.not.equal(null);
         expect(res.body).to.deep.equal(
-          Object.assign(newRecipe, { id: res.body.id })
+          Object.assign(newBlog, { id: res.body.id })
         );
       });
   });
