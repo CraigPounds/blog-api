@@ -40,17 +40,17 @@ describe('Blogs', function() {
         expect(res).to.have.status(201);
         expect(res).to.be.json;
         expect(res.body).to.be.a('object');
-        expect(res.body).to.include.keys('id', 'title', 'content', 'author', 'publishDate');
+        expect(res.body).to.include.keys('id', 'title', 'content', 'author');
         expect(res.body.id).to.not.equal(null);
         expect(res.body).to.deep.equal(
           Object.assign(newBlog, { id: res.body.id })
         );
       });
   });
-  it('should update blog on PUT', function() {
+  // it('should update blog on PUT', function() {
   
-  });
-  it('should delete blog on DELETE', function() {
+  // });
+  // it('should delete blog on DELETE', function() {
   
-  });
+  // });
 });
