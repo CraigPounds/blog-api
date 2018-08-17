@@ -47,10 +47,39 @@ describe('Blogs', function() {
         );
       });
   });
-  // it('should update blog on PUT', function() {
-  
-  // });
-  // it('should delete blog on DELETE', function() {
-  
-  // });
+  it('should update blog on PUT', function() {
+    const updateData = {
+      title: 'More and More AI',
+      content: 'Shut up human!',
+      author: 'Servotron'
+    };
+    return (
+      chai
+        .request(app)
+        .get('/blog-posts')
+        .then(function(res) {
+          updateData.id = res.body[0].id;
+          return chai
+            .request(app)
+            .put(`/blog-posts/${updateData.id}`)
+            .send(updateData);
+        })
+        .then(function(res) {
+          expect(res).to.have.status(204);
+        })
+    );
+  });
+  it('should delete blog on DELETE', function() {
+    return (
+      chai
+        .request(app)
+        .get('/blog-posts')
+        .then(function(res) {
+          return chai.request(app).delete(`/blog-posts/${res.body[0].id}`);
+        })
+        .then(function(res) {
+          expect(res).to.have.status(204);
+        })
+    );
+  });
 });
