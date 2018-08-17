@@ -27,7 +27,7 @@ describe('Blogs', function() {
       });
   });
   it('should add a blog on POST', function() {
-    const newBlog = { title: 'AI & Programming' content: 'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Vero fugit voluptatibus ipsam distinctio eius asperiores ab enim tempore ea vitae. Quo reprehenderit, officiis sed ipsa illo ipsum nobis voluptatibus repellendus?', author: 'Visual Studio Code' };
+    const newBlog = { title: 'AI & Programming', content: 'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Vero fugit voluptatibus ipsam distinctio eius asperiores ab enim tempore ea vitae. Quo reprehenderit, officiis sed ipsa illo ipsum nobis voluptatibus repellendus?', author: 'Visual Studio Code' };
     return chai
       .request(app)
       .post('/blog-posts')
