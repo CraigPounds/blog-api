@@ -24,14 +24,14 @@ describe('Blogs', function() {
         expect(res.body).to.be.a('array');
         expect(res.body.length).to.be.at.least(1);
         const expectedKeys = ['id', 'title', 'content', 'author', 'publishDate'];
-        res.body.forEach(function(blog) {
+        res.body.forEach(function(blog) { 
           expect(blog).to.be.a('object');
           expect(blog).to.include.keys(expectedKeys);
         });
       });
   });
   it('should add a blog on POST', function() {
-    const newBlog = { title: 'AI & Programming', content: 'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Vero fugit voluptatibus ipsam distinctio eius asperiores ab enim tempore ea vitae. Quo reprehenderit, officiis sed ipsa illo ipsum nobis voluptatibus repellendus?', author: 'Visual Studio Code' };
+    const newBlog = { title: 'AI & Programming', content: 'Lorem ipsum dolor sit, amet consectetur adipisicing elit?', author: 'Visual Studio Code', publishDate: 1534473154606 };
     return chai
       .request(app)
       .post('/blog-posts')
@@ -40,7 +40,7 @@ describe('Blogs', function() {
         expect(res).to.have.status(201);
         expect(res).to.be.json;
         expect(res.body).to.be.a('object');
-        expect(res.body).to.include.keys('id', 'title', 'content', 'author');
+        expect(res.body).to.include.keys('id', 'title', 'content', 'author', 'publishDate');
         expect(res.body.id).to.not.equal(null);
         expect(res.body).to.deep.equal(
           Object.assign(newBlog, { id: res.body.id })
