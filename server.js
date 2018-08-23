@@ -8,7 +8,7 @@ const blogRouter = require('./blogRouter');
 
 mongoose.Promise = global.Promise;
 const { PORT, DATABASE_URL } = require('./config');
-const { Blogs } = require('./models');
+const { Blog } = require('./models');
 
 app.use(morgan('common'));
 app.use(express.static('public'));
@@ -18,13 +18,7 @@ app.use('/blog-posts', blogRouter);
 let server;
 
 function runServer(databaseUrl, port=PORT) {
-  // const port = process.env.PORT || 8080;
   return new Promise((resolve, reject) => {
-    // server = app
-    // .listen(port, () => {
-    //   console.log(`Your app is listening on port ${port}`);
-    //   resolve(server);
-    // })
     mongoose.connect(databaseUrl, err => {
       if (err) {
         return reject(err);

@@ -2,7 +2,7 @@
 
 const express = require('express');
 const router = express.Router();
-const {BlogPosts} = require('./models');
+const { BlogPosts } = require('./models');
 
 // BlogPosts.create('AI & Humans', 'Humans can be trusted to behave unethically with any technology', 'Napes Weaver');
 
