@@ -4,10 +4,24 @@ const express = require('express');
 const router = express.Router();
 const {BlogPosts} = require('./models');
 
-BlogPosts.create('AI & Humans', 'Humans can be trusted to behave unethically with any technology', 'Napes Weaver');
+// BlogPosts.create('AI & Humans', 'Humans can be trusted to behave unethically with any technology', 'Napes Weaver');
+
+// router.get('/', (req, res) => {
+//   res.json(BlogPosts.get());
+// });
 
 router.get('/', (req, res) => {
-  res.json(BlogPosts.get());
+  BlogPosts.find()
+    .limit(10)
+    .then(blogPosts => {
+      res.json({
+        blogPosts: blogPosts.map(post => post)
+      });
+    })
+    .catch(err => {
+      console.error(err);
+      res.status(500).json({ message: 'Internal server error'});
+    });
 });
 
 router.post('/', (req, res) => {
