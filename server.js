@@ -1,48 +1,56 @@
 'use strict';
 
 const express = require('express');
+const mongoose = require('mongoose');
 const morgan = require('morgan');
 const app = express();
 const blogRouter = require('./blogRouter');
+
+mongoose.Promise = global.Promise;
+const { PORT, DATABASE_URL } = require('./config');
+const { Blogs } = require('./models');
 
 app.use(morgan('common'));
 app.use(express.static('public'));
 app.use(express.json());
 app.use('/blog-posts', blogRouter);
 
-// app.listen(process.env.PORT || 8080, () => {
-//   console.log(`Your app is listening on port ${process.env.PORT || 8080}`);
-// });
-
-// app.get('/', (req, res) => {
-//   res.sendFile(__dirname + '/views/index.html');
-// });
-
 let server;
 
-function runServer() {
-  const port = process.env.PORT || 8080;
+function runServer(databaseUrl, port=PORT) {
+  // const port = process.env.PORT || 8080;
   return new Promise((resolve, reject) => {
-    server = app
-      .listen(port, () => {
+    // server = app
+    // .listen(port, () => {
+    //   console.log(`Your app is listening on port ${port}`);
+    //   resolve(server);
+    // })
+    mongoose.connect(databaseUrl, err => {
+      if (err) {
+        return reject(err);
+      }
+      server = app.listen(port, () => {
         console.log(`Your app is listening on port ${port}`);
-        resolve(server);
+        resolve;
       })
-      .on('error', err => {
-        reject(err);
-      });
+        .on('error', err => {
+          mongoose.disconnect();
+          reject(err);
+        });
+    });
   });
 }
 
 function closeServer() {
-  return new Promise((resolve, reject) => {
-    console.log('Closing server');
-    server.close(err => {
-      if (err) {
-        reject(err);
-        return;
-      }
-      resolve();
+  return mongoose.disconnect().then(() => {
+    return new Promise((resolve, reject) => {
+      console.log('Closing server');
+      server.close(err => {
+        if (err) {
+          return reject(err);
+        }
+        resolve();
+      });
     });
   });
 }
