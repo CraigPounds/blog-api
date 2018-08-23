@@ -8,7 +8,7 @@ const blogRouter = require('./blogRouter');
 
 mongoose.Promise = global.Promise;
 const { PORT, DATABASE_URL } = require('./config');
-const { Blog } = require('./models');
+
 
 app.use(morgan('common'));
 app.use(express.static('public'));
@@ -50,7 +50,7 @@ function closeServer() {
 }
 
 if (require.main === module) {
-  runServer().catch(err => console.error(err));
+  runServer(DATABASE_URL).catch(err => console.error(err));
 }
 
 module.exports = { app, runServer, closeServer };
