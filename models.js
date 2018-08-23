@@ -1,7 +1,7 @@
 'use strict';
 
 const mongoose = require('mongoose');
-const uuid = require('uuid');
+// const uuid = require('uuid');
 
 function StorageException(message) {
   this.message = message;
@@ -53,16 +53,7 @@ function StorageException(message) {
 //   }
 // };
 
-// function createBlogPostsModel() {
-//   const storage = Object.create(BlogPosts);
-//   storage.posts = [];
-//   return storage;
-// }
-
-// module.exports = {BlogPosts: createBlogPostsModel()};
-
 const blogSchema = mongoose.Schema({
-  // id: { type: String, required: true },
   title: { type: String, required: true },
   author: {
     firstName: { type: String, required: false },

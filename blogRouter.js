@@ -2,20 +2,14 @@
 
 const express = require('express');
 const router = express.Router();
-const { BlogPosts } = require('./models');
-
-// BlogPosts.create('AI & Humans', 'Humans can be trusted to behave unethically with any technology', 'Napes Weaver');
-
-// router.get('/', (req, res) => {
-//   res.json(BlogPosts.get());
-// });
+const { Blog } = require('./models');
 
 router.get('/', (req, res) => {
-  BlogPosts.find()
+  Blog.find()
     .limit(10)
-    .then(blogPosts => {
+    .then(blogs => {
       res.json({
-        blogPosts: blogPosts.map(post => post)
+        blogs: blogs.map(blog => blog.serialize())
       });
     })
     .catch(err => {
