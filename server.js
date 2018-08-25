@@ -9,7 +9,6 @@ const blogRouter = require('./blogRouter');
 mongoose.Promise = global.Promise;
 const { PORT, DATABASE_URL } = require('./config');
 
-
 app.use(morgan('common'));
 app.use(express.static('public'));
 app.use(express.json());
@@ -21,6 +20,7 @@ function runServer(databaseUrl, port = PORT) {
   return new Promise((resolve, reject) => {
     mongoose.connect(
       databaseUrl,
+      { useNewUrlParser: true },
       err => {
         if (err) {
           return reject(err);
