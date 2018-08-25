@@ -63,7 +63,7 @@ const blogSchema = mongoose.Schema({
   created: {type: Date, default: Date.now}
 });
 
-blogSchema.virtual('name').get(function() {
+blogSchema.virtual('fullName').get(function() {
   return `${this.author.firstName} ${this.author.lastName}`.trim();
 });
 
@@ -71,7 +71,7 @@ blogSchema.methods.serialize = function() {
   return {
     id: this._id,
     title: this.title,
-    author: this.name,
+    author: this.fullName,
     content: this.content,
     created: this.created
   };
