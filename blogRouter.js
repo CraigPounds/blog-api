@@ -5,7 +5,8 @@ const router = express.Router();
 const { Blog } = require('./models');
 
 router.get('/', (req, res) => {
-  Blog.find()
+  Blog
+    .find()
     .limit(10)
     .then(blogs => {
       res.json({
