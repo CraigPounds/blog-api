@@ -60,18 +60,20 @@ const blogSchema = mongoose.Schema({
     lastName: { type: String, required: true }
   },
   content: { type: String, required: true },
+  created: {type: Date, default: Date.now}
 });
 
 blogSchema.virtual('name').get(function() {
-  return `${this.address.building} ${this.address.street}`.trim();
+  return `${this.author.firstName} ${this.author.lastName}`.trim();
 });
 
 blogSchema.methods.serialize = function() {
   return {
     id: this._id,
     title: this.title,
-    author: this.author,
-    content: this.content
+    author: this.name,
+    content: this.content,
+    created: this.created
   };
 };
 
