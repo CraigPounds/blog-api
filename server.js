@@ -12,7 +12,7 @@ const { PORT, DATABASE_URL } = require('./config');
 app.use(morgan('common'));
 app.use(express.static('public'));
 app.use(express.json());
-app.use('/blog-posts', blogRouter);
+app.use('/posts', blogRouter);
 
 let server;
 
@@ -34,8 +34,7 @@ function runServer(databaseUrl, port = PORT) {
             mongoose.disconnect();
             reject(err);
           });
-      }
-    );
+      });
   });
 }
 

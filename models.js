@@ -10,7 +10,7 @@ const blogSchema = mongoose.Schema({
     firstName: { type: String, required: false },
     lastName: { type: String, required: true }
   },
-  content: { type: String, required: true },
+  content: { type: String },
   created: {type: Date, default: Date.now}
 });
 
