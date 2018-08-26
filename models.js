@@ -2,6 +2,8 @@
 
 const mongoose = require('mongoose');
 
+mongoose.Promise = global.Promise;
+
 const blogSchema = mongoose.Schema({
   title: { type: String, required: true },
   author: {
