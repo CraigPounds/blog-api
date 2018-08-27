@@ -8,7 +8,6 @@ const { Blog } = require('./models');
 router.get('/', (req, res) => {
   Blog
     .find()
-    // .limit(10)
     .then(blogs => {
       res.json({
         blogs: blogs.map(blog => blog.serialize())
@@ -19,6 +18,17 @@ router.get('/', (req, res) => {
       res.status(500).json({ message: 'Internal server error'});
     });
 });
+
+// router.get('/', (req, res) => {
+//   Blog
+//     .findOne()
+//     .populate('author')
+//     .then(blog => res.json(blog.serialize()))
+//     .catch(err => {
+//       console.error(err);
+//       res.status(500).json({ message: 'Internal server error'});
+//     });
+// });
 
 router.get('/:id', (req, res) => {
   Blog
