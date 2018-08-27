@@ -23,43 +23,6 @@ const blogSchema = mongoose.Schema({
   comments: [commentSchema]
 });
 
-
-const Author = mongoose.model('Author', authorSchema);
-const BlogPost = mongoose.model('BlogPost', blogSchema);
-
-Author
-  .create({
-    'firstName': 'Sarah',
-    'lastName': 'Clarke',
-    'userName': 'sarah.clarke'
-  })
-  .then(author => {
-    BlogPost
-      .create({
-        title: 'another title',
-        content: 'a bunch more amazing words',
-        author: author._id
-      });
-  });
-
-BlogPost
-  .findOne({
-    title: 'some title'
-  })
-  .then(post => {
-    post.comments.push({ content: 'a comment on that last comment' });
-    post.save();
-  });
-
-BlogPost
-  .findOne({
-    title: 'some title'
-  })
-  .then(post => {
-    post.comments.id(post.comments[0]._id).remove();
-    post.save();
-  });
-
 // 'pre hook' ~  Mongoose query middleware function to populate author data before each call to findOne()
 blogSchema.pre('findOne', function(next) {
   this.populate('author');
@@ -85,6 +48,7 @@ blogSchema.methods.serialize = function() {
   };
 };
 
+const Author = mongoose.model('Author', authorSchema);
 const Blog = mongoose.model('Blog', blogSchema);
 
-module.exports = { Blog };
+module.exports = { Author, Blog };

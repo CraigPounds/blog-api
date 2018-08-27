@@ -2,6 +2,7 @@
 
 const express = require('express');
 const router = express.Router();
+const { Author } = require('./models');
 const { Blog } = require('./models');
 
 router.get('/', (req, res) => {
@@ -38,7 +39,12 @@ router.post('/', (req, res) => {
       console.error(message);
       return res.status(400).send(message);
     }
-  }  
+  }
+  Author.create({
+    firstName: req.body.firstName,
+    lastName: req.body.lastName,
+    userName: req.body.userName
+  });
   Blog.create({
     title: req.body.title,
     author: req.body.author,
