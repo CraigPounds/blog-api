@@ -1,3 +1,6 @@
 node_modules
 package-lock.json
 seed-data.json
+primer-dataset.json
+blogposts-seed-data.json
+authors-seed-data.json
