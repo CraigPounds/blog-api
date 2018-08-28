@@ -1,12 +1,10 @@
 'use strict';
 
 const mongoose = require('mongoose');
+mongoose.set('useCreateIndex', true);
+mongoose.Promise = global.Promise;
 
-// mongoose.Promise = global.Promise;
-
-const authorSchema = mongoose.Schema({
-  //firstName: { type: String },
-  //lastName: { type: String, required: true },
+const authorSchema = mongoose.Schema({  
   firstName: 'string',
   lastName: 'string',
   userName: {
@@ -18,13 +16,10 @@ const authorSchema = mongoose.Schema({
 const commentSchema = mongoose.Schema({content: 'string'});
 
 const blogSchema = mongoose.Schema({
-  // title: { type: String, required: true },
-  // content: { type: String },
   title: 'string',
   author: { type: mongoose.Schema.Types.ObjectId, ref: 'Author' },
   content: 'string',
   comments: [commentSchema]
-  // created: {type: Date, default: Date.now},
 });
 
 // 'pre hook' ~  Mongoose query middleware function to populate author data before each call to find()

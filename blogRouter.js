@@ -4,30 +4,31 @@ const express = require('express');
 const router = express.Router();
 const { Author, Blog } = require('./models');
 
-// router.get('/', (req, res) => {
-//   Blog
-//     .find()
-//     .then(blogs => {
-//       res.json({
-//         blogs: blogs.map(blog => blog.serialize())
-//       });
-//     })
-//     .catch(err => {
-//       console.error(err);
-//       res.status(500).json({ message: 'Internal server error'});
-//     });
-// });
-
 router.get('/', (req, res) => {
   Blog
-    .findOne()
-    // .populate('author')
-    .then(blog => res.json(blog.serialize()))
+    .find()
+    .then(blogs => {
+      res.json({
+        blogs: blogs.map(blog => blog.serialize())
+      });
+      // console.log(res);
+    })
     .catch(err => {
       console.error(err);
       res.status(500).json({ message: 'Internal server error'});
-    }); 
+    });
 });
+
+// router.get('/', (req, res) => {
+//   Blog
+//     .findOne()
+//     // .populate('author')
+//     .then(blog => res.json(blog.serialize()))
+//     .catch(err => {
+//       console.error(err);
+//       res.status(500).json({ message: 'Internal server error'});
+//     }); 
+// });
 
 router.get('/:id', (req, res) => {
   Blog
