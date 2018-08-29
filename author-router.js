@@ -53,9 +53,19 @@ router.post('/', (req, res) => {
       }
     })
     .catch(err => {
-      console.error(err);
+      console.error(err); 
       res.status(500).json({ error: 'Internal server error'});
     });
+});
+
+router.delete('/:id', (req, res) => {
+  Author.findByIdAndRemove(req.params.id)
+    .then(blog => res.status(204).end())
+    .catch(err => res.status(500).json({ message: 'Internal server error'}));
+});
+
+router.use('*', function(req, res) {
+  res.status(404).json({ message: 'Not Found' });
 });
 
 module.exports = router;
