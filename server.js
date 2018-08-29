@@ -4,14 +4,20 @@ const express = require('express');
 const mongoose = require('mongoose');
 const morgan = require('morgan');
 const app = express();
-const blogRouter = require('./blogRouter');
 
-mongoose.Promise = global.Promise;
+const authorRouter = require('./author-router');
+const blogRouter = require('./blog-router');
+
 const { PORT, DATABASE_URL } = require('./config');
 
+mongoose.Promise = global.Promise;
+
 app.use(morgan('common'));
+
 app.use(express.static('public'));
 app.use(express.json());
+
+app.use('/authors', authorRouter);
 app.use('/posts', blogRouter);
 
 let server;

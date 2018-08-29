@@ -7,7 +7,7 @@ const { app, runServer, closeServer } = require('../server');
 
 chai.use(chaiHttp);
 
-describe('Blogs', function() {
+describe('Posts', function() {
   before(function() {
     runServer();
   });

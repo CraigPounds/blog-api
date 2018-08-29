@@ -7,28 +7,24 @@ const { Author, Blog } = require('./models');
 router.get('/', (req, res) => {
   Blog
     .find()
-    .then(blogs => {
-      res.json({
-        blogs: blogs.map(blog => blog.serialize())
-      });
-      // console.log(res);
+    .then(blogposts => {
+      // res.json({
+      //   blogposts: blogposts.map(blog => blog.serialize())
+      // });
+      res.json(blogposts.map(blog => {
+        return {
+          id: blog._id,
+          author: blog.authorName,
+          content: blog.content,
+          title: blog.title
+        };
+      }));
     })
     .catch(err => {
       console.error(err);
       res.status(500).json({ message: 'Internal server error'});
     });
 });
-
-// router.get('/', (req, res) => {
-//   Blog
-//     .findOne()
-//     // .populate('author')
-//     .then(blog => res.json(blog.serialize()))
-//     .catch(err => {
-//       console.error(err);
-//       res.status(500).json({ message: 'Internal server error'});
-//     }); 
-// });
 
 router.get('/:id', (req, res) => {
   Blog
@@ -41,29 +37,46 @@ router.get('/:id', (req, res) => {
 });
 
 router.post('/', (req, res) => {
-  const requiredFields = ['title', 'author', 'content'];
-  for (let i = 0; i < requiredFields.length; i++) {
-    const field = requiredFields[i];
+  const requiredFields = ['title', 'content', 'author_id'];
+  requiredFields.forEach(field => {
     if (!(field in req.body)) {
       const message = `Missing \`${field}\` in request body`;
       console.error(message);
       return res.status(400).send(message);
     }
-  }
-  Author.create({
-    firstName: req.body.firstName,
-    lastName: req.body.lastName,
-    userName: req.body.userName
   });
-  Blog.create({
-    title: req.body.title,
-    author: req.body.author,
-    content: req.body.content
-  })   
-    .then(blog => res.status(201).json(blog.serialize()))
+
+  Author
+    .findById(req.body.author_id)
+    .then(author => {
+      if (author) {
+        Blog
+          .create({
+            title: req.body.title,
+            content: req.body.content,
+            author: req.body.id
+          })
+          .then(blogPost => res.status(201).json({
+            id: blogPost.id,
+            author: `${author.firstName} ${author.lastName}`,
+            content: blogPost.content,
+            title: blogPost.title,
+            comments: blogPost.comments
+          }))
+          .catch(err => {
+            console.error(err);
+            res.status(500).json({ error: 'Something went wrong' });
+          });
+      }
+      else {
+        const message = 'Author not found';
+        console.error(message);
+        return res.status(400).send(message);
+      }
+    })
     .catch(err => {
       console.error(err);
-      res.status(500).json({message: 'Internal server error'});
+      res.status(500).json({ error: 'something went horribly awry' });
     });
 });
 
