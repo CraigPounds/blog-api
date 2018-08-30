@@ -54,7 +54,7 @@ router.post('/', (req, res) => {
           .create({
             title: req.body.title,
             content: req.body.content,
-            author: req.body.id
+            author: req.body.author_id
           })
           .then(blogPost => res.status(201).json({
             id: blogPost.id,
