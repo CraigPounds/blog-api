@@ -103,7 +103,7 @@ router.put('/:id', (req, res) => {
 });
 
 router.delete('/:id', (req, res) => {
-  Blog.findByIdAndRemove(req.params.id)
+  Blog.findByIdAndDelete(req.params.id)
     .then(blog => res.status(204).end())
     .catch(err => { 
       console.error(err);

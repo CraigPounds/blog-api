@@ -64,9 +64,9 @@ router.put('/:id', (req, res) => {
 
 router.delete('/:id', (req, res) => {
   Blog
-    .remove({ author: req.params.id })
+    .deleteMany({ author: req.params.id })
     .then(() => {
-      Author.findByIdAndRemove(req.params.id)
+      Author.findByIdAndDelete(req.params.id)
         .then(() => {
           res.status(204).end();       
         });        
