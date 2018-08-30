@@ -11,14 +11,6 @@ router.get('/', (req, res) => {
       res.json({
         blogposts: blogposts.map(blog => blog.serialize())
       });
-      // res.json(blogposts.map(blog => {
-      //   return {
-      //     id: blog._id,
-      //     author: blog.authorName,
-      //     content: blog.content,
-      //     title: blog.title
-      //   };
-      // }));
     })
     .catch(err => {
       console.error(err);
