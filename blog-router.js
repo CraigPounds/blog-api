@@ -96,13 +96,19 @@ router.put('/:id', (req, res) => {
   Blog
     .findByIdAndUpdate(req.params.id, { $set: toUpdate })
     .then(blog => res.status(204).end())
-    .catch(err => res.status(500).json({ message: 'Internal server error'}));
+    .catch(err => { 
+      console.error(err);
+      res.status(500).json({ message: 'Internal server error'});
+    });
 });
 
 router.delete('/:id', (req, res) => {
   Blog.findByIdAndRemove(req.params.id)
     .then(blog => res.status(204).end())
-    .catch(err => res.status(500).json({ message: 'Internal server error' }));
+    .catch(err => { 
+      console.error(err);
+      res.status(500).json({ message: 'Internal server error'});
+    });
 });
 
 router.use('*', function(req, res) {

@@ -31,7 +31,7 @@ router.post('/', (req, res) => {
     .findOne({ userName: req.body.userName })
     .then(author => {
       if (author) {
-        const message = 'Username must be unique';;
+        const message = 'Username must be unique';
         console.error(message);
         return res.status(400).send(message);
       } else {
@@ -58,10 +58,23 @@ router.post('/', (req, res) => {
     });
 });
 
+router.put('/:id', (req, res) => {
+
+});
+
 router.delete('/:id', (req, res) => {
-  Author.findByIdAndRemove(req.params.id)
-    .then(blog => res.status(204).end())
-    .catch(err => res.status(500).json({ message: 'Internal server error'}));
+  Blog
+    .remove({ author: req.params.id })
+    .then(() => {
+      Author.findByIdAndRemove(req.params.id)
+        .then(() => {
+          res.status(204).end();       
+        });        
+    })
+    .catch(err => { 
+      console.error(err);
+      res.status(500).json({ message: 'Internal server error'});
+    });
 });
 
 router.use('*', function(req, res) {
