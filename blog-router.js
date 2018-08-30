@@ -87,14 +87,14 @@ router.put('/:id', (req, res) => {
     return res.status(400).json({ message: message });
   }
   const toUpdate = {};
-  const updateableFields = ['title', 'content', 'author'];
-  updateableFields.forEach(field => {
+  const updateable = ['title', 'content', 'author'];
+  updateable.forEach(field => {
     if (field in req.body) {
       toUpdate[field] = req.body[field];
     }
   });
   Blog
-    .findByIdAndUpdate(req.params.id, { $set: toUpdate })
+    .findOneAndUpdate(req.params.id, { $set: toUpdate })
     .then(blog => res.status(204).end())
     .catch(err => { 
       console.error(err);
