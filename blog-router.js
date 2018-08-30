@@ -2,23 +2,24 @@
 
 const express = require('express');
 const router = express.Router();
-const { Author, Blog } = require('./models');
+let { Author } = require('./models');
+const { Blog } = require('./models');
 
 router.get('/', (req, res) => {
   Blog
     .find()
     .then(blogposts => {
-      // res.json({
-      //   blogposts: blogposts.map(blog => blog.serialize())
-      // });
-      res.json(blogposts.map(blog => {
-        return {
-          id: blog._id,
-          author: blog.authorName,
-          content: blog.content,
-          title: blog.title
-        };
-      }));
+      res.json({
+        blogposts: blogposts.map(blog => blog.serialize())
+      });
+      // res.json(blogposts.map(blog => {
+      //   return {
+      //     id: blog._id,
+      //     author: blog.authorName,
+      //     content: blog.content,
+      //     title: blog.title
+      //   };
+      // }));
     })
     .catch(err => {
       console.error(err);

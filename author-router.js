@@ -2,7 +2,8 @@
 
 const express = require('express');
 const router = express.Router();
-const { Author, Blog } = require('./models');
+let { Author } = require('./models');
+const { Blog } = require('./models');
 
 router.get('/', (req, res) => {
   Author
