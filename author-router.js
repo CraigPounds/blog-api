@@ -72,7 +72,7 @@ router.put('/:id', (req, res) => {
     }
   });
   Author
-    .findOneAndUpdate(req.params.id, { $set: toUpdate })
+    .findOneAndUpdate(req.params.id, { $set: toUpdate }, { new: true })
     .then(author => res.status(204).end())
     .catch(err => {
       console.error(err);
