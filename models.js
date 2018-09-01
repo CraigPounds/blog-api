@@ -34,6 +34,10 @@ blogSchema.pre('findOne', function(next) {
   next();
 });
 
+authorSchema.virtual('fullName').get(function() {
+  return `${this.firstName} ${this.lastName}`.trim();
+});
+
 blogSchema.virtual('fullName').get(function() {
   return `${this.author.firstName} ${this.author.lastName}`.trim();
 });
@@ -41,8 +45,7 @@ blogSchema.virtual('fullName').get(function() {
 authorSchema.methods.serialize = function() {
   return {
     id: this._id,
-    firstName: this.firstName,
-    lastName: this.lastName,
+    name: this.fullName,
     userName: this.userName
   };
 };

@@ -73,25 +73,28 @@ router.post('/', (req, res) => {
 });
 
 router.put('/:id', (req, res) => {
-  if(!(req.params.id && req.body.id && req.params.id === req.body.id)) {
-    const message = `Request path id (${req.params.id}) and request body id (${req.body.id}) must match`;
-    console.error(message);
-    return res.status(400).json({ message: message });
+  if (!(req.params.id && req.body.id && req.params.id === req.body.id)) {
+    res.status(400).json({
+      error: 'Request path id and request body id values must match'
+    });
   }
-  const toUpdate = {};
-  const updateable = ['title', 'content', 'author'];
+
+  const updated = {};
+  const updateable = ['title', 'content'];
   updateable.forEach(field => {
     if (field in req.body) {
-      toUpdate[field] = req.body[field];
+      updated[field] = req.body[field];
     }
   });
+
   Blog
-    .findOneAndUpdate(req.params.id, { $set: toUpdate })
-    .then(blog => res.status(204).end())
-    .catch(err => { 
-      console.error(err);
-      res.status(500).json({ message: 'Internal server error'});
-    });
+    .findByIdAndUpdate(req.params.id, { $set: updated }, { new: true })
+    .then(updatedPost => res.status(200).json({
+      id: updatedPost.id,
+      title: updatedPost.title,
+      content: updatedPost.content
+    }))
+    .catch(err => res.status(500).json({ message: err }));
 });
 
 router.delete('/:id', (req, res) => {
