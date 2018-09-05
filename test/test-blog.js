@@ -46,6 +46,9 @@ describe('API resource', function() {
   afterEach(function() {
     return tearDownDb();
   });
+  after(function() {
+    return closeServer();
+  });  
   describe('GET authors endpoint', function() {
     it('should return all authors', function() {
 
