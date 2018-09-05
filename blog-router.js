@@ -57,7 +57,7 @@ router.post('/', (req, res) => {
           }))
           .catch(err => {
             console.error(err);
-            res.status(500).json({ error: 'Something went wrong' });
+            res.status(500).json({ message: 'Internal server error'});
           });
       }
       else {
@@ -68,7 +68,7 @@ router.post('/', (req, res) => {
     })
     .catch(err => {
       console.error(err);
-      res.status(500).json({ error: 'something went horribly awry' });
+      res.status(500).json({ message: 'Internal server error'});
     });
 });
 
