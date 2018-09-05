@@ -19,8 +19,7 @@ function seedData() {
   for (let i = 1; i <= 10; i++) {
     authorData.push(generateAuthorData());
     blogData.push(generateBlogData());
-  }
-  
+  }  
   Author.insertMany(authorData);
   return Blog.insertMany(blogData);
 }
