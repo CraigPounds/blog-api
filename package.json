@@ -1,18 +1,19 @@
 {
   "name": "blog-api",
   "version": "1.0.0",
-  "description": "",
+  "description": "Mongo exercise of a simple blogpost api",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
     "test": "mocha --exit"
   },
-  "author": "",
+  "author": "Craig Pounds",
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.18.3",
     "express": "^4.16.3",
-    "mongoose": "^5.2.12",
+    "faker": "^4.1.0",
+    "mongoose": "^5.2.13",
     "morgan": "^1.9.0"
   },
   "devDependencies": {
