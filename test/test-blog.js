@@ -49,51 +49,51 @@ describe('API resource', function() {
   after(function() {
     return closeServer();
   });  
-  describe('GET authors endpoint', function() {
-    it('should return all authors', function() {
+  // describe('GET authors endpoint', function() {
+  //   it('should return all authors', function() {
 
-    });
-  });
-  describe('POST authors endpoint', function() {
-    it('should add an author to the authors collection', function() {
+  //   });
+  // });
+  // describe('POST authors endpoint', function() {
+  //   it('should add an author to the authors collection', function() {
 
-    });
-  });
-  describe('PUT authors endpoint', function() {
-    it('should update valid fields for an author by author id', function() {
+  //   });
+  // });
+  // describe('PUT authors endpoint', function() {
+  //   it('should update valid fields for an author by author id', function() {
 
-    });
-  });
-  describe('DELETE authors endpoint', function() {
-    it('should delete author and all associated blogs by author id', function() {
+  //   });
+  // });
+  // describe('DELETE authors endpoint', function() {
+  //   it('should delete author and all associated blogs by author id', function() {
 
-    });
-  });
-  describe('GET blogs endpoint', function() {
-    it('should get all blogs', function() {
+  //   });
+  // });
+  // describe('GET blogs endpoint', function() {
+  //   it('should get all blogs', function() {
 
-    });
-  });
-  describe('GET blogs by id endpoint', function() {
-    it('should get a single blog by blog id', function() {
+  //   });
+  // });
+  // describe('GET blogs by id endpoint', function() {
+  //   it('should get a single blog by blog id', function() {
 
-    });
-  });
-  describe('POST blogs endpoint', function() {
-    it('should add a blog for by author id', function() {
+  //   });
+  // });
+  // describe('POST blogs endpoint', function() {
+  //   it('should add a blog for by author id', function() {
 
-    });
-  });
-  describe('PUT blogs endpoint', function() {
-    it('should update valid fields for a blog by blog id', function() {
+  //   });
+  // });
+  // describe('PUT blogs endpoint', function() {
+  //   it('should update valid fields for a blog by blog id', function() {
 
-    });
-  });
-  describe('DELETE blogs endpoint', function() {
-    it('should delete a single blog by blog id', function() {
+  //   });
+  // });
+  // describe('DELETE blogs endpoint', function() {
+  //   it('should delete a single blog by blog id', function() {
 
-    });
-  });
+  //   });
+  // });
 });
 
 
