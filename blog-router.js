@@ -61,7 +61,7 @@ router.post('/', (req, res) => {
           });
       }
       else {
-        const message = 'Author not found';
+        const message = 'Author not in database';
         console.error(message);
         return res.status(400).send(message);
       }
