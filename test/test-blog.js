@@ -49,11 +49,23 @@ describe('API resource', function() {
   after(function() {
     return closeServer();
   });  
-  // describe('GET authors endpoint', function() {
-  //   it('should return all authors', function() {
-
-  //   });
-  // });
+  describe('GET authors endpoint', function() {
+    let res;
+    it('should return all authors', function() {
+      return chai.request(app)
+        .get('/authors')
+        .then(function(_res) {
+          res = _res;
+          expect(res).to.have.status(200);
+          expect(res.body.authors).to.have.lengthOf.at.least(1);
+          return Authors.count();
+        })
+        .then(function(count) {
+          expect(res.body.authors).to.have.lengthOf(count);
+        });
+    });
+    
+  });
   // describe('POST authors endpoint', function() {
   //   it('should add an author to the authors collection', function() {
 
