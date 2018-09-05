@@ -13,7 +13,16 @@ chai.use(chaiHttp);
 
 function seedData() {
   console.log('seeding data');
+  const authorData = [];
+  const blogData = [];
+
+  for (let i = 1; i <= 10; i++) {
+    authorData.push(generateAuthorData());
+    blogData.push(generateBlogData());
+  }
   
+  Author.insertMany(authorData);
+  return Blog.insertMany(blogData);
 }
 
 function generateAuthorData() {
