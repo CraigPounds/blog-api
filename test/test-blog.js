@@ -3,10 +3,26 @@
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 const expect = chai.expect;
+const faker = require('faker');
+const mongoose = require('mongoose');
+const { Authors, Blog } = require('../models');
 const { app, runServer, closeServer } = require('../server');
+const { TEST_DATABASE_URL } = require('../config');
 
 chai.use(chaiHttp);
 
+function seedAuthorData() {
+  console.log('seeding author data');
+  return {
+    firstName: faker.firstName,
+    lastName: faker.lastName
+  };
+}
+console.log(seedAuthorData());
+function seedBlogsData() {
+  console.log('seeding blogs data');
+
+}
 describe('Posts', function() {
   before(function() {
     runServer();
