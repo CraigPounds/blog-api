@@ -21,6 +21,9 @@
 //   "author_id": "ObjectId(ajf9292kjf0)"
 // }
 
+// mLab
+// mongodb://napes:passmlab7@ds133642.mlab.com:33642/blogs-app-db
+
 exports.DATABASE_URL = process.env.DATABASE_URL || 'mongodb://localhost/blog-app';
 exports.TEST_DATABASE_URL = process.env.TEST_DATABASE_URL || 'mongodb://localhost/test-blog-app';
 exports.PORT = process.env.PORT || 8080;
