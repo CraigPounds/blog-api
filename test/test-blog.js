@@ -13,6 +13,16 @@ const { TEST_DATABASE_URL } = require('../config');
 
 chai.use(chaiHttp);
 
+// function seedAuthorData() {
+//   console.info('seeding author data');
+//   const seedData = [];
+
+//   for (let i = 1; i <= 10; i++) {
+//     seedData.push(generateAuthorData());
+//   }
+//   return Author.insertMany(seedData);
+// }
+
 function seedAuthorData() {
   console.info('seeding author data');
   const seedData = [];
@@ -35,10 +45,12 @@ function gernerateUserName() {
   return `${faker.name.firstName()} ${faker.name.lastName()}`;
 }
 
-function generateBlogData() {
+function generateBlogData(id) {
   return {
+    author: id,
     title: faker.lorem.sentence(),
-    content: faker.lorem.paragraph()    
+    content: faker.lorem.paragraph(),
+    comments: [ { content: faker.lorem.paragraph() }, { content: faker.lorem.paragraph() }, { content: faker.lorem.paragraph()} ]
   };
 }
 
@@ -129,9 +141,9 @@ describe('API resource', function() {
   describe('PUT authors endpoint', function() {
     it('should update valid fields for an author by author id', function() {
       const updateData = {
-        firstName: 'Foo',
-        lastName: 'Bar',
-        userName: 'foo.bar'
+        firstName: faker.name.firstName(),
+        lastName: faker.name.lastName(),
+        userName: gernerateUserName()
       };
       return Author
         .findOne()
@@ -177,8 +189,44 @@ describe('API resource', function() {
   });
 
   // describe('GET blogs endpoint', function() {
-  //   it('should get all blogs', function() {
+  //   it('should return all blogs', function() {
+  //     let res;
+  //     return chai.request(app)
+  //       .get('/blogs')
+  //       .then(function(_res) {
+  //         res = _res;
+  //         expect(res).to.have.status(200);
+  //         expect(res.body.blogs).to.have.lengthOf.at.least(1);
+  //         return Blog.count();
+  //       })
+  //       .then(function(count) {
+  //         expect(res.body.blogs).to.have.lengthOf(count);
+  //       });
+  //   });
+  //   it('should return blogs with correct fields', function() {
+  //     let resBlog;
+  //     return chai.request(app)
+  //       .get('/blogs')
+  //       .then(function(res) {
+  //         expect(res).to.have.status(200);
+  //         expect(res).to.be.json;
+  //         expect(res.body.blogs).go.be.a('array');
+  //         expect(res.body.blogs).to.have.lengthOf.at.least(1);
 
+  //         res.body.blogs.forEach(function(blog) {
+  //           expect(blog).go.be.a('object');
+  //           expect(blog).to.include.keys('_id', 'title', 'author', 'content', 'comments');
+  //         });
+  //         resBlog = res.body.blogs[0];
+  //         return Blog.findById(resBlog._id);
+  //       })
+  //       .then(function(blog) {
+  //         expect(resBlog._id).to.equal(blog.id);
+  //         expect(resBlog.title).to.equal(blog.title);
+  //         expect(resBlog.author).to.equal(blog.author);
+  //         expect(resBlog.content).to.equal(blog.content);
+  //         expect(resBlog.comments).to.equal(blog.comments);
+  //       });
   //   });
   // });
 
@@ -190,19 +238,73 @@ describe('API resource', function() {
 
   // describe('POST blogs endpoint', function() {
   //   it('should add a blog for by author id', function() {
-
+  //     const authorId = Math.floor(Math.random() * 1000);
+  //     const newBlog = generateBlogData(authorId);
+  //     return chai.request(app)
+  //       .post('/blogs')
+  //       .send(newBlog)
+  //       .then(function(res) {
+  //         expect(res).to.have.status(201);
+  //         expect(res).to.be.json;
+  //         expect(res.body).to.be.a('object');
+  //         expect(res.body).to.include.keys('_id', 'title', 'author', 'content', 'comments');
+  //         expect(res.body._id).to.not.be.null;
+  //         expect(res.body.title).to.equal(newBlog.title);
+  //         expect(res.body.author).to.equal(newBlog.author);
+  //         expect(res.body.content).to.equal(newBlog.content);
+  //         expect(res.body.comments).to.equal(newBlog.comments);
+  //         return Blog.findById(res.body._id);
+  //       })
+  //       .then(function(blog) {
+  //         expect(blog.title).to.equal(newBlog.title);
+  //         expect(blog.author).to.equal(newBlog.author);
+  //         expect(blog.content).to.equal(newBlog.content);
+  //         expect(blog.comments).to.equal(newBlog.comments);
+  //       });
   //   });
   // });
 
   // describe('PUT blogs endpoint', function() {
   //   it('should update valid fields for a blog by blog id', function() {
-
+  //     const updateData = {
+  //       title: faker.lorem.sentence(),
+  //       content: faker.lorem.paragraph()
+  //     };
+  //     return Blog
+  //       .findOne()
+  //       .then(function(blog) {
+  //         updateData.id = blog._id;
+  //         return chai.request(app)
+  //           .put(`/blogs/${blog._id}`)
+  //           .send(updateData);
+  //       })
+  //       .then(function(res) {
+  //         expect(res).to.have.status(204);
+  //         return Blog.findById(blog._id);
+  //       })
+  //       .then(function(blog) {
+  //         expect(blog.title).to.equal(updateData.title);
+  //         expect(blog.content).to.equal(updateData.content);
+  //       });
   //   });
   // });
   
   // describe('DELETE blogs endpoint', function() {
   //   it('should delete a single blog by blog id', function() {
-
+  //     let blog;
+  //     return Blog
+  //       .findOne()
+  //       .then(function(_blog) {
+  //         blog = _blog;
+  //         return chai.request(app).delete(`/blogs${blog._id}`);
+  //       })
+  //       .then(function(res) {
+  //         expect(res).to.have.status(204);
+  //         return Blog.findById(blog._id);
+  //       })
+  //       .then(function(_blog) {
+  //         expect(_blog).to.be.null;
+  //       });
   //   });
   // });
 });
