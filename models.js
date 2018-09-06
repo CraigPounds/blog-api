@@ -46,7 +46,7 @@ blogSchema.virtual('fullName').get(function() {
 
 authorSchema.methods.serialize = function() {
   return {
-    id: this._id,
+    _id: this._id,
     name: this.fullName,
     userName: this.userName
   };
@@ -54,7 +54,7 @@ authorSchema.methods.serialize = function() {
 
 blogSchema.methods.serialize = function() {
   return {
-    id: this._id,
+    _id: this._id,
     title: this.title,
     author: this.fullName,
     content: this.content,

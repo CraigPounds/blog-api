@@ -41,11 +41,9 @@ router.post('/', (req, res) => {
             lastName: req.body.lastName,
             userName: req.body.userName
           })
-          .then(author => res.status(201).json({
-            _id: author.id,
-            name: author.serialize(),
-            userName: author.userName
-          }))
+          .then(author => res.status(201).json(
+            author.serialize()
+          ))
           .catch(err => {
             console.error(err);
             res.status(500).json({ error: 'Internal server error'});
@@ -83,11 +81,14 @@ router.put('/:id', (req, res) => {
         Author
           .findByIdAndUpdate(req.params.id, { $set: updated }, { new: true })
           .then(updatedAuthor => {
-            res.status(200).json({
-              id: updatedAuthor.id,
-              name: `${updatedAuthor.firstName} ${updatedAuthor.lastName}`,
-              userName: updatedAuthor.userName
-            });
+            // res.status(200).json({
+            //   _id: updatedAuthor.id,
+            //   name: `${updatedAuthor.firstName} ${updatedAuthor.lastName}`,
+            //   userName: updatedAuthor.userName
+            // });
+            res.status(200).json(
+              updatedAuthor.serialize()
+            );
           })
           .catch(err => res.status(500).json({ message: err }));
       }
@@ -110,7 +111,7 @@ router.delete('/:id', (req, res) => {
 });
 
 router.use('*', function(req, res) {
-  res.status(404).json({ message: 'Not Found' });
+  res.status(404).json({ message: 'Endpoint not Found' });
 });
 
 module.exports = router;

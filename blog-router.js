@@ -37,7 +37,6 @@ router.post('/', (req, res) => {
       return res.status(400).send(message);
     }
   });
-
   Author
     .findById(req.body.author_id)
     .then(author => {
@@ -48,13 +47,16 @@ router.post('/', (req, res) => {
             content: req.body.content,
             author: req.body.author_id
           })
-          .then(blogPost => res.status(201).json({
-            id: blogPost.id,
-            author: `${author.firstName} ${author.lastName}`,
-            content: blogPost.content,
-            title: blogPost.title,
-            comments: blogPost.comments
-          }))
+          // .then(blogPost => res.status(201).json({
+          //   id: blogPost.id,
+          //   author: `${author.firstName} ${author.lastName}`,
+          //   content: blogPost.content,
+          //   title: blogPost.title,
+          //   comments: blogPost.comments
+          // }))
+          .then(blogPost => res.status(201).json(
+            blogPost.serialize()
+          ))
           .catch(err => {
             console.error(err);
             res.status(500).json({ message: 'Internal server error'});
@@ -78,22 +80,24 @@ router.put('/:id', (req, res) => {
       error: 'Request path id and request body id values must match'
     });
   }
-
   const updated = {};
   const updateable = ['title', 'content'];
   updateable.forEach(field => {
+
     if (field in req.body) {
       updated[field] = req.body[field];
     }
   });
-
   Blog
     .findByIdAndUpdate(req.params.id, { $set: updated }, { new: true })
-    .then(updatedPost => res.status(200).json({
-      id: updatedPost.id,
-      title: updatedPost.title,
-      content: updatedPost.content
-    }))
+    // .then(updatedPost => res.status(200).json({
+    //   _id: updatedPost.id,
+    //   title: updatedPost.title,
+    //   content: updatedPost.content
+    // }))
+    .then(updatedPost => res.status(200).json(
+      updatedPost.serialize()
+    ))
     .catch(err => res.status(500).json({ message: err }));
 });
 
@@ -107,7 +111,7 @@ router.delete('/:id', (req, res) => {
 });
 
 router.use('*', function(req, res) {
-  res.status(404).json({ message: 'Not Found' });
+  res.status(404).json({ message: 'Endpoint not found' });
 });
 
 module.exports = router;
