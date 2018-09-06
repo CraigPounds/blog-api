@@ -47,16 +47,13 @@ router.post('/', (req, res) => {
             content: req.body.content,
             author: req.body.author_id
           })
-          // .then(blogPost => res.status(201).json({
-          //   id: blogPost.id,
-          //   author: `${author.firstName} ${author.lastName}`,
-          //   content: blogPost.content,
-          //   title: blogPost.title,
-          //   comments: blogPost.comments
-          // }))
-          .then(blogPost => res.status(201).json(
-            blogPost.serialize()
-          ))
+          .then(blogPost => res.status(201).json({
+            _id: blogPost.id,
+            title: blogPost.title,
+            author: `${author.firstName} ${author.lastName}`,
+            content: blogPost.content,
+            comments: blogPost.comments
+          }))
           .catch(err => {
             console.error(err);
             res.status(500).json({ message: 'Internal server error'});
@@ -90,14 +87,11 @@ router.put('/:id', (req, res) => {
   });
   Blog
     .findByIdAndUpdate(req.params.id, { $set: updated }, { new: true })
-    // .then(updatedPost => res.status(200).json({
-    //   _id: updatedPost.id,
-    //   title: updatedPost.title,
-    //   content: updatedPost.content
-    // }))
-    .then(updatedPost => res.status(200).json(
-      updatedPost.serialize()
-    ))
+    .then(updatedPost => res.status(200).json({
+      _id: updatedPost.id,
+      title: updatedPost.title,
+      content: updatedPost.content
+    }))
     .catch(err => res.status(500).json({ message: err }));
 });
 

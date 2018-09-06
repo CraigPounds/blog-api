@@ -81,11 +81,6 @@ router.put('/:id', (req, res) => {
         Author
           .findByIdAndUpdate(req.params.id, { $set: updated }, { new: true })
           .then(updatedAuthor => {
-            // res.status(200).json({
-            //   _id: updatedAuthor.id,
-            //   name: `${updatedAuthor.firstName} ${updatedAuthor.lastName}`,
-            //   userName: updatedAuthor.userName
-            // });
             res.status(200).json(
               updatedAuthor.serialize()
             );
