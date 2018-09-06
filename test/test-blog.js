@@ -232,7 +232,31 @@ describe('API resource', function() {
 
   // describe('GET blogs by id endpoint', function() {
   //   it('should get a single blog by blog id', function() {
+  //     let blog;
+  //     return Blog
+  //       .findOne()
+  //       .then(function(_blog) {
+  //         blog = _blog;
+  //         return chai.request(app).get(`/blogs/${_blog._id}`);
+  //       })
+  //       .then(function(res) {
+  //         expect(res).to.have.status(200);
+  //         expect(res).to.be.json;
+  //         expect(res.body.blog).to.be.a('array');
+  //         expect(res.body.blog).to.have.lengthOf(1);
 
+  //         res.body.blogs.forEach(function(resBlog) {
+  //           expect(resBlog).to.be.a('object');
+  //           expect(resBlog).to.include.keys('_id', 'title', 'author', 'content', 'comments');
+  //         });
+  //         return Blog.findById(blog._id);
+  //       })
+  //       .then(function(resBlog) {
+  //         expect(resBlog.title).to.equal(blog.tilte);
+  //         expect(resBlog.author).to.equal(blog.author);
+  //         expect(resBlog.content).to.equal(blog.content);
+  //         expect(resBlog.comments).to.equal(blog.comments);
+  //       });
   //   });
   // });
 
