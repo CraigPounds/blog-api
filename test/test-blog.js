@@ -126,17 +126,55 @@ describe('API resource', function() {
     });
   });
 
-  // describe('PUT authors endpoint', function() {
-  //   it('should update valid fields for an author by author id', function() {
+  describe('PUT authors endpoint', function() {
+    it('should update valid fields for an author by author id', function() {
+      const updateData = {
+        firstName: 'Foo',
+        lastName: 'Bar',
+        userName: 'foo.bar'
+      };
+      return Author
+        .findOne()
+        .then(function(author) {
+          updateData.id = author._id;
+          return chai.request(app)
+            .put(`/authors/${author._id}`)
+            .send(updateData);
+        })
+        .then(function(res) {          
+          // expect(res).to.have.status(204);
+          expect(res).to.have.status(200);
+          return Author.findById(updateData.id);
+        })
+        .then(function(author) {
+          // console.log('author', author, 'updateData', updateData);
+          // console.log('author._id', author._id, 'updateData.id', updateData.id);
+          // expect(author._id).to.equal(updateData.id);
+          expect(author.firstName).to.equal(updateData.firstName);
+          expect(author.lastName).to.equal(updateData.lastName);
+          expect(author.userName).to.equal(updateData.userName);
+        });
+    });
+  });
 
-  //   });
-  // });
-
-  // describe('DELETE authors endpoint', function() {
-  //   it('should delete author and all associated blogs by author id', function() {
-
-  //   });
-  // });
+  describe('DELETE authors endpoint', function() {
+    it('should delete author and all associated blogs by author id', function() {
+      let author;
+      return Author
+        .findOne()
+        .then(function(_author) {
+          author = _author;
+          return chai.request(app).delete(`/authors/${author._id}`);
+        })
+        .then(function(res) {
+          expect(res).to.have.status(204);
+          return Author.findById(author._id);
+        })
+        .then(function(_author) {
+          expect(_author).to.be.null;
+        });
+    });
+  });
 
   // describe('GET blogs endpoint', function() {
   //   it('should get all blogs', function() {
