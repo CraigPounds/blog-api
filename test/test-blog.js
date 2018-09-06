@@ -20,7 +20,6 @@ function seedAuthorData() {
   for (let i = 1; i <= 10; i++) {
     seedData.push(generateAuthorData());
   }
-  // console.log(seedData);
   return Author.insertMany(seedData);
 }
 
@@ -95,32 +94,37 @@ describe('API resource', function() {
           return Author.findById(resAuthor._id);
         })
         .then(function(author) {
+          const name = resAuthor.name.split(' ');
+          expect(name[0]).to.be.equal(author.firstName);
+          expect(name[1]).to.be.equal(author.lastName);
+
           expect(resAuthor._id).to.equal(author.id);
           expect(resAuthor.userName).to.equal(author.userName);
         });
     });
   });
 
-  // describe('POST authors endpoint', function() {
-  //   it('should add an author to the authors collection', function() {
-  //     const newAuthor = generateAuthorData();
-  //     return chai.request(app)
-  //       .post('/authors')
-  //       .send(newAuthor)
-  //       .then(function(res) {
-  //         expect(res).to.have.status(201);
-  //         expect(res).to.be.json;
-  //         expect(res.body).to.be.a('object');
-  //         expect(res.body).to.include.keys('_id', 'name', 'userName');
-  //         // console.log('res.body', res.body);
-  //         expect(res.body.id).to.not.be.null;
-  //         return Author.findById(res.body.id);
-  //       })
-  //       .then(function(author) {
-  //         expect(author.userName).to.equal(newAuthor.userName);
-  //       });
-  //   });
-  // });
+  describe('POST authors endpoint', function() {
+    it('should add an author to the authors collection', function() {
+      const newAuthor = generateAuthorData();
+      return chai.request(app)
+        .post('/authors')
+        .send(newAuthor)
+        .then(function(res) {
+          expect(res).to.have.status(201);
+          expect(res).to.be.json;
+          expect(res.body).to.be.a('object');
+          expect(res.body).to.include.keys('_id', 'name', 'userName');
+          expect(res.body.id).to.not.be.null;
+          return Author.findById(res.body._id);
+        })
+        .then(function(author) {
+          expect(author.firstName).to.be.equal(newAuthor.firstName);
+          expect(author.lastName).to.be.equal(newAuthor.lastName);
+          expect(author.userName).to.equal(newAuthor.userName);
+        });
+    });
+  });
 
   // describe('PUT authors endpoint', function() {
   //   it('should update valid fields for an author by author id', function() {
