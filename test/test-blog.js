@@ -6,6 +6,8 @@ const expect = chai.expect;
 const faker = require('faker');
 const mongoose = require('mongoose');
 const { Author, Blog } = require('../models');
+// const authorRouter = require('../author-router');
+// const blogRouter = require('../blog-router');
 const { app, runServer, closeServer } = require('../server');
 const { TEST_DATABASE_URL } = require('../config');
 
@@ -87,15 +89,14 @@ describe('API resource', function() {
 
           res.body.authors.forEach(function(author) {
             expect(author).to.be.a('object');
-            // expect(author).to.include.keys('_id', 'firstName', 'lastName', 'userName');
             expect(author).to.include.keys('id', 'name', 'userName');
           });
           resAuthor = res.body.authors[0];
-          console.log('resAuthor', resAuthor);
+          // console.log('resAuthor', resAuthor);
           return Author.findById(resAuthor.id);
         })
         .then(function(author) {
-          console.log('author', author);
+          // console.log('author', author);
           expect(resAuthor.id).to.equal(author.id);
           expect(resAuthor.userName).to.equal(author.userName);
         });
@@ -104,7 +105,22 @@ describe('API resource', function() {
 
   // describe('POST authors endpoint', function() {
   //   it('should add an author to the authors collection', function() {
-
+  //     const newAuthor = generateAuthorData();
+  //     return chai.request(app)
+  //       .post('/authors')
+  //       .send(newAuthor)
+  //       .then(function(res) {
+  //         expect(res).to.have.status(201);
+  //         expect(res).to.be.json;
+  //         expect(res.body).to.be.a('object');
+  //         expect(res.body).to.include.keys('');
+          
+  //         expect(res.body.id).to.not.be.null;
+  //         return Author.findById(res.body.id);
+  //       })
+  //       .then(function(author) {
+  //         expect
+  //       })
   //   });
   // });
 
