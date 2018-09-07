@@ -7,9 +7,9 @@ const { Author, Blog } = require('./models');
 router.get('/', (req, res) => {
   Blog
     .find()
-    .then(blogposts => {
+    .then(blogs => {
       res.json({
-        blogposts: blogposts.map(blog => blog.serialize())
+        blogs: blogs.map(blog => blog.serialize())
       });
     })
     .catch(err => {
