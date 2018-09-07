@@ -319,33 +319,39 @@ describe('API resource', function() {
   //   });
   // });
 
-  // describe('POST blogs endpoint', function() {
-  //   it('should add a blog for by author id', function() {
-  //     const authorId = Math.floor(Math.random() * 1000);
-  //     const newBlog = generateBlogData(authorId);
-  //     return chai.request(app)
-  //       .post('/posts')
-  //       .send(newBlog)
-  //       .then(function(res) {
-  //         expect(res).to.have.status(201);
-  //         expect(res).to.be.json;
-  //         expect(res.body).to.be.a('object');
-  //         expect(res.body).to.include.keys('_id', 'title', 'author', 'content', 'comments');
-  //         expect(res.body._id).to.not.be.null;
-  //         expect(res.body.title).to.equal(newBlog.title);
-  //         expect(res.body.author).to.equal(newBlog.author);
-  //         expect(res.body.content).to.equal(newBlog.content);
-  //         expect(res.body.comments).to.equal(newBlog.comments);
-  //         return Blog.findById(res.body._id);
-  //       })
-  //       .then(function(blog) {
-  //         expect(blog.title).to.equal(newBlog.title);
-  //         expect(blog.author).to.equal(newBlog.author);
-  //         expect(blog.content).to.equal(newBlog.content);
-  //         expect(blog.comments).to.equal(newBlog.comments);
-  //       });
-  //   });
-  // });
+  describe('POST blogs endpoint', function() {
+    it('should add a blog by author id', function() {
+      let newBlog;
+      return Author
+        .findOne()
+        .then(function(author) {
+          // newBlog = generateBlogData(author._id);
+          newBlog = {
+            author_id: author._id,
+            title: faker.lorem.sentence(),
+            content: faker.lorem.paragraph()
+          };
+          // console.log('AAAAAAAAAAAAAAAAAAAAAAAAAAAAA newBlog', newBlog);
+          return chai.request(app)
+            .post('/posts')
+            .send(newBlog)
+            .then(function(res) {
+              expect(res).to.have.status(201);
+              expect(res).to.be.json;
+              expect(res.body).to.be.a('object');
+              expect(res.body).to.include.keys('_id', 'title', 'author', 'content', 'comments');
+              expect(res.body._id).to.not.be.null;
+              return Blog.findById(res.body._id);
+            })
+            .then(function(blog) {
+              expect(blog.title).to.equal(newBlog.title);
+              // console.log('BBBBBBBBBBBBBBBBB blog', blog);
+              expect(blog.author_id).to.equal(newBlog._id);
+              expect(blog.content).to.equal(newBlog.content);
+            });
+        });     
+    });
+  });
 
   describe('PUT blogs endpoint', function() {
     it('should update valid fields for a blog by blog id', function() {
