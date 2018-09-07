@@ -347,47 +347,48 @@ describe('API resource', function() {
   //   });
   // });
 
-  // describe('PUT blogs endpoint', function() {
-  //   it('should update valid fields for a blog by blog id', function() {
-  //     const updateData = {
-  //       title: faker.lorem.sentence(),
-  //       content: faker.lorem.paragraph()
-  //     };
-  //     return Blog
-  //       .findOne()
-  //       .then(function(blog) {
-  //         updateData.id = blog._id;
-  //         return chai.request(app)
-  //           .put(`/posts/${blog._id}`)
-  //           .send(updateData);
-  //       })
-  //       .then(function(res) {
-  //         expect(res).to.have.status(204);
-  //         return Blog.findById(blog._id);
-  //       })
-  //       .then(function(blog) {
-  //         expect(blog.title).to.equal(updateData.title);
-  //         expect(blog.content).to.equal(updateData.content);
-  //       });
-  //   });
-  // });
+  describe('PUT blogs endpoint', function() {
+    it('should update valid fields for a blog by blog id', function() {
+      const updateData = {
+        title: faker.lorem.sentence(),
+        content: faker.lorem.paragraph()
+      };
+      return Blog
+        .findOne()
+        .then(function(blog) {
+          updateData.id = blog._id;
+          return chai.request(app)
+            .put(`/posts/${blog._id}`)
+            .send(updateData);
+        })
+        .then(function(res) {
+          // expect(res).to.have.status(204);
+          expect(res).to.have.status(200);
+          return Blog.findById(updateData.id);
+        })
+        .then(function(blog) {
+          expect(blog.title).to.equal(updateData.title);
+          expect(blog.content).to.equal(updateData.content);
+        });
+    });
+  });
   
-  // describe('DELETE blogs endpoint', function() {
-  //   it('should delete a single blog by blog id', function() {
-  //     let blog;
-  //     return Blog
-  //       .findOne()
-  //       .then(function(_blog) {
-  //         blog = _blog;
-  //         return chai.request(app).delete(`/post${blog._id}`);
-  //       })
-  //       .then(function(res) {
-  //         expect(res).to.have.status(204);
-  //         return Blog.findById(blog._id);
-  //       })
-  //       .then(function(_blog) {
-  //         expect(_blog).to.be.null;
-  //       });
-  //   });
-  // });
+  describe('DELETE blogs endpoint', function() {
+    it('should delete a single blog by blog id', function() {
+      let blog;
+      return Blog
+        .findOne()
+        .then(function(_blog) {
+          blog = _blog;
+          return chai.request(app).delete(`/posts/${blog._id}`);
+        })
+        .then(function(res) {
+          expect(res).to.have.status(204);
+          return Blog.findById(blog._id);
+        })
+        .then(function(_blog) {
+          expect(_blog).to.be.null;
+        });
+    });
+  });
 });
