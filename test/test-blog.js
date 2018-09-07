@@ -6,10 +6,8 @@ const expect = chai.expect;
 const faker = require('faker');
 const mongoose = require('mongoose');
 const { Author, Blog } = require('../models');
-
 // const authorRouter = require('../author-router');
 // const blogRouter = require('../blog-router');
-
 const { app, runServer, closeServer } = require('../server');
 const { TEST_DATABASE_URL } = require('../config');
 
@@ -41,7 +39,6 @@ chai.use(chaiHttp);
 function seedData() {
   console.info('seeding author data');
   const seedData = [];
-
   for (let i = 1; i <= 10; i++) {
     seedData.push(generateAuthorData());
   }
@@ -49,17 +46,12 @@ function seedData() {
     .then(function() {
       console.info('seeding blog data');
       const blogData = [];
-
       return chai.request(app)
         .get('/authors')
         .then(function(res) {
-          // console.log('================ res.body.authors', res.body.authors);
           res.body.authors.forEach(author => {
-            // blogData.push(generateBlogData(author._id));
             let newBlogData = generateBlogData(author._id);
-            // console.log('============= author._id', author._id, '============= newBlogData', newBlogData);
             blogData.push(newBlogData);
-            // console.log('=================== blogData', blogData);
           });
           return Blog.insertMany(blogData);
         });
@@ -155,10 +147,9 @@ describe('API resource', function() {
           return Author.findById(resAuthor._id);
         })
         .then(function(author) {
-          const name = resAuthor.name.split(' ');
-          expect(name[0]).to.be.equal(author.firstName);
-          expect(name[1]).to.be.equal(author.lastName);
-
+          const splitName = resAuthor.name.split(' ');
+          expect(splitName[0]).to.be.equal(author.firstName);
+          expect(splitName[1]).to.be.equal(author.lastName);
           expect(resAuthor._id).to.equal(author.id);
           expect(resAuthor.userName).to.equal(author.userName);
         });
@@ -208,9 +199,6 @@ describe('API resource', function() {
           return Author.findById(updateData.id);
         })
         .then(function(author) {
-          // console.log('========== author', author, '=========== updateData', updateData);
-          // console.log('============= author._id', author._id, '========== updateData.id', updateData.id);
-          // expect(author._id).to.equal(updateData.id);
           expect(author.firstName).to.equal(updateData.firstName);
           expect(author.lastName).to.equal(updateData.lastName);
           expect(author.userName).to.equal(updateData.userName);
@@ -264,19 +252,20 @@ describe('API resource', function() {
 
           res.body.blogs.forEach(function(blog) {
             expect(blog).to.be.a('object');
-            // console.log('============================ blog', blog);
-            // expect(blog).to.include.keys('_id', 'title', 'author', 'content', 'comments');
             expect(blog).to.include.keys('_id', 'title', 'author', 'content');
-
           });
           resBlog = res.body.blogs[0];
           return Blog.findById(resBlog._id);
         })
         .then(function(blog) {
+          const splitName = resBlog.author.split(' ');
           expect(resBlog._id).to.equal(blog.id);
           expect(resBlog.title).to.equal(blog.title);
-          // expect(resBlog.author).to.equal(blog.author);
+          expect(splitName[0]).to.equal(blog.author.firstName);
+          expect(splitName[1]).to.equal(blog.author.lastName);
           expect(resBlog.content).to.equal(blog.content);
+          // console.log('RRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR resBlog.comments', resBlog.comments);
+          // console.log('BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB blog.comments', blog.comments);
           // expect(resBlog.comments).to.equal(blog.comments);
         });
     });
@@ -289,21 +278,22 @@ describe('API resource', function() {
         .findOne()
         .then(function(_blog) {
           blog = _blog;
-          console.log('BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB blog', blog);
           return chai.request(app).get(`/posts/${_blog._id}`);
         })
         .then(function(res) {
           expect(res).to.have.status(200);
           expect(res).to.be.json;
-          console.log('RRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR res.body', res.body);
           expect(res.body).to.be.a('object');
           expect(res.body).to.include.keys('_id', 'title', 'author', 'content', 'comments');
           return Blog.findById(blog._id);
         })
         .then(function(resBlog) {
           expect(resBlog.title).to.equal(blog.title);
-          // expect(resBlog.author).to.equal(blog.author);
+          expect(resBlog.author.firstName).to.equal(blog.author.firstName);
+          expect(resBlog.author.lastName).to.equal(blog.author.lastName);
           expect(resBlog.content).to.equal(blog.content);
+          // console.log('RRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR resBlog.comments', resBlog.comments);
+          // console.log('BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB blog.comments', blog.comments);
           // expect(resBlog.comments).to.equal(blog.comments);
         });
     });
@@ -315,13 +305,11 @@ describe('API resource', function() {
       return Author
         .findOne()
         .then(function(author) {
-          // newBlog = generateBlogData(author._id);
           newBlog = {
             author_id: author._id,
             title: faker.lorem.sentence(),
             content: faker.lorem.paragraph()
           };
-          // console.log('AAAAAAAAAAAAAAAAAAAAAAAAAAAAA newBlog', newBlog);
           return chai.request(app)
             .post('/posts')
             .send(newBlog)
@@ -335,7 +323,6 @@ describe('API resource', function() {
             })
             .then(function(blog) {
               expect(blog.title).to.equal(newBlog.title);
-              // console.log('BBBBBBBBBBBBBBBBB blog', blog);
               expect(blog.author_id).to.equal(newBlog._id);
               expect(blog.content).to.equal(newBlog.content);
             });
