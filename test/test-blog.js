@@ -6,56 +6,31 @@ const expect = chai.expect;
 const faker = require('faker');
 const mongoose = require('mongoose');
 const { Author, Blog } = require('../models');
-// const authorRouter = require('../author-router');
-// const blogRouter = require('../blog-router');
 const { app, runServer, closeServer } = require('../server');
 const { TEST_DATABASE_URL } = require('../config');
-
 chai.use(chaiHttp);
 
-// function seedAuthorData() {
-//   console.info('seeding author data');
-//   const seedData = [];
-//   for (let i = 1; i <= 10; i++) {
-//     seedData.push(generateAuthorData());
-//   }
-//   return Author.insertMany(seedData);
-// }
-
-// function seedBlogData() {
-//   console.info('seeding blog data');
-//   const blogData = [];
-//   return chai.request(app)
-//     .get('/authors')
-//     .then(function(res) {
-//       res.body.authors.forEach(author => {
-//         let newBlogData = generateBlogData(author._id);
-//         blogData.push(newBlogData);
-//       });
-//       return Blog.insertMany(blogData);
-//     });
-// }
-
-function seedData() {
+function seedAuthorData() {
   console.info('seeding author data');
   const seedData = [];
   for (let i = 1; i <= 10; i++) {
     seedData.push(generateAuthorData());
   }
-  return Author.insertMany(seedData)
-    .then(function() {
-      console.info('seeding blog data');
-      const blogData = [];
-      return chai.request(app)
-        .get('/authors')
-        .then(function(res) {
-          res.body.authors.forEach(author => {
-            let newBlogData = generateBlogData(author._id);
-            blogData.push(newBlogData);
-          });
-          return Blog.insertMany(blogData);
-        });
-    });  
+  return Author.insertMany(seedData);
+}
+
+function seedBlogData() {
+  console.info('seeding blog data');
+  const blogData = [];
+  return chai.request(app)
+    .get('/authors')
+    .then(function(res) {
+      res.body.authors.forEach(author => {
+        let newBlogData = generateBlogData(author._id);
+        blogData.push(newBlogData);
+      });
+      return Blog.insertMany(blogData);
+    });
 }
 
 function gernerateUserName() {
@@ -101,12 +76,11 @@ describe('API resource', function() {
     return runServer(TEST_DATABASE_URL);
   });
   beforeEach(function() {
-    // return seedAuthorData();
-    return seedData();
+    return seedAuthorData();
   });
-  // this.beforeEach(function() {
-  //   return seedBlogData();
-  // });
+  beforeEach(function() {
+    return seedBlogData();
+  });
   afterEach(function() {
     return tearDownDb();
   });
@@ -194,7 +168,6 @@ describe('API resource', function() {
             .send(updateData);
         })
         .then(function(res) {          
-          // expect(res).to.have.status(204);
           expect(res).to.have.status(200);
           return Author.findById(updateData.id);
         })
@@ -264,9 +237,6 @@ describe('API resource', function() {
           expect(splitName[0]).to.equal(blog.author.firstName);
           expect(splitName[1]).to.equal(blog.author.lastName);
           expect(resBlog.content).to.equal(blog.content);
-          // console.log('RRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR resBlog.comments', resBlog.comments);
-          // console.log('BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB blog.comments', blog.comments);
-          // expect(resBlog.comments).to.equal(blog.comments);
         });
     });
   });
@@ -292,9 +262,6 @@ describe('API resource', function() {
           expect(resBlog.author.firstName).to.equal(blog.author.firstName);
           expect(resBlog.author.lastName).to.equal(blog.author.lastName);
           expect(resBlog.content).to.equal(blog.content);
-          // console.log('RRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR resBlog.comments', resBlog.comments);
-          // console.log('BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB blog.comments', blog.comments);
-          // expect(resBlog.comments).to.equal(blog.comments);
         });
     });
   });
@@ -345,7 +312,6 @@ describe('API resource', function() {
             .send(updateData);
         })
         .then(function(res) {
-          // expect(res).to.have.status(204);
           expect(res).to.have.status(200);
           return Blog.findById(updateData.id);
         })
